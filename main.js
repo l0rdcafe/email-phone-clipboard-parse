@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { exec, spawn } = require("child_process");
 
 const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/gm;
