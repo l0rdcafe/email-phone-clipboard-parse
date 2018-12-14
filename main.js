@@ -22,16 +22,25 @@ function parseClipboard() {
 
 
 async function main() {
-	const { phoneNums, emails } = await parseClipboard();
-	console.log(`${phoneNums.size} phone numbers found in clipboard.`);
-	console.log(`${emails.size} email addresses found in clipboard.`);
+	try {
+		const { phoneNums, emails } = await parseClipboard();
+		console.log(`${phoneNums.size} phone numbers found in clipboard.`);
+		console.log(`${emails.size} email addresses found in clipboard.`);
 
-	const matches = [...phoneNums, ...emails].join("\n");
+		const matches = [...phoneNums, ...emails].join("\n");
+		const childProcess = spawn("pbcopy");
+		childProcess.stdin.write(matches);
+		childProcess.stdin.end();
 
-  const process = spawn("pbcopy");
-  process.stdin.write(matches);
-  process.stdin.end();
-  console.log("Emails and phone numbers copied to clipboard!");
+		if (matches.length > 0) {
+		console.log("Emails and phone numbers copied to clipboard!");
+		}
+
+		process.exit(0);
+	} catch (e) {
+		console.log(e);
+		process.exit(1);
+	}
 }
 
 main();
